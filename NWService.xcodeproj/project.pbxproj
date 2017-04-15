@@ -15,6 +15,7 @@
 		2484CFA71EA1858A00907A8E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2484CFA51EA1858A00907A8E /* LaunchScreen.storyboard */; };
 		2484CFB21EA1858A00907A8E /* NWServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2484CFB11EA1858A00907A8E /* NWServiceTests.swift */; };
 		2484CFBD1EA1858A00907A8E /* NWServiceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2484CFBC1EA1858A00907A8E /* NWServiceUITests.swift */; };
+		2484CFCB1EA188E600907A8E /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2484CFCA1EA188E600907A8E /* TableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		2484CFB81EA1858A00907A8E /* NWServiceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NWServiceUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2484CFBC1EA1858A00907A8E /* NWServiceUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NWServiceUITests.swift; sourceTree = "<group>"; };
 		2484CFBE1EA1858A00907A8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2484CFCA1EA188E600907A8E /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				2484CF991EA1858A00907A8E /* AppDelegate.swift */,
 				2484CF9B1EA1858A00907A8E /* ViewController.swift */,
 				2484CF9D1EA1858A00907A8E /* Main.storyboard */,
+				2484CFCA1EA188E600907A8E /* TableViewController.swift */,
 				2484CFA31EA1858A00907A8E /* Assets.xcassets */,
 				2484CFA51EA1858A00907A8E /* LaunchScreen.storyboard */,
 				2484CFA81EA1858A00907A8E /* Info.plist */,
@@ -265,6 +268,7 @@
 				2484CF9C1EA1858A00907A8E /* ViewController.swift in Sources */,
 				2484CFA21EA1858A00907A8E /* NWService.xcdatamodeld in Sources */,
 				2484CF9A1EA1858A00907A8E /* AppDelegate.swift in Sources */,
+				2484CFCB1EA188E600907A8E /* TableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
