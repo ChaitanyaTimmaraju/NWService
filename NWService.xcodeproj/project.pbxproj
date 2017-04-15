@@ -511,6 +511,7 @@
 				2484CFC31EA1858A00907A8E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2484CFC41EA1858A00907A8E /* Build configuration list for PBXNativeTarget "NWServiceTests" */ = {
 			isa = XCConfigurationList;
@@ -519,6 +520,7 @@
 				2484CFC61EA1858A00907A8E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2484CFC71EA1858A00907A8E /* Build configuration list for PBXNativeTarget "NWServiceUITests" */ = {
 			isa = XCConfigurationList;
@@ -527,6 +529,7 @@
 				2484CFC91EA1858A00907A8E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

@@ -11,11 +11,20 @@ import UIKit
 class TableViewController: UITableViewController,XMLParserDelegate {
 
     
-    var cityZipCodes = ["74075","25414","20910","74008"];
+    var cityZipCodes = ["74075","25414","98101","99501"];
+    var cityNames = ["Stillwater,Oklahoma","Charles Town,Massachusetts","Seattle,Washington","Anchorage,Alaska"];
     var maxTemperatues = [Int]();
     var currentDate = ""
     var check = false
   
+    func UIColorFromTemperature(temperature:Int) -> UIColor{
+        let interpolatedValue:Double = (Double(temperature) - 32.0)/(90.0-32.0)
+        let red = (0.117647*(1.0-interpolatedValue)+interpolatedValue*1.0)
+        let green =  0.564706*(1-interpolatedValue) + interpolatedValue*0.270588
+        let blue = 1.0*(1-interpolatedValue) + interpolatedValue*0.01
+        return UIColor(red: CGFloat(red), green: CGFloat(green), blue: CGFloat(blue) , alpha: 1.0)
+        
+    }
     
     @IBAction func addNewZip(_ sender: UIBarButtonItem) {
         
@@ -25,12 +34,39 @@ class TableViewController: UITableViewController,XMLParserDelegate {
             alert->Void in
              let firstTextField = alertController.textFields![0] as UITextField
             
-            if(!self.cityZipCodes.contains(firstTextField.text!))
+            if(!self.cityZipCodes.contains(firstTextField.text!) && (firstTextField.text?.characters.count)!>0)
             {
-                
-                print("\(firstTextField.text)")
-                self.cityZipCodes.append(firstTextField.text!)
-                self.retriveDataFromZip(firstTextField.text!)
+            
+                let url:URL = URL(string : "http://api.zipasaur.us/zip/\(firstTextField.text!)")!
+                let config = URLSessionConfiguration.default
+                let session = URLSession(configuration: config)
+                let task = session.dataTask(with: url){ (data,response,error) in
+                    //check to see any errors
+                    guard error == nil else{
+                        print("Error in session call:\(error)")
+                        return
+                    }
+                    guard let result = data else {
+                        print("No data received")
+                        return
+                    }
+                    do{
+                        let returnArray = try JSONSerialization.jsonObject(with: result, options: .allowFragments) as? NSDictionary
+                        if returnArray != nil
+                        {
+                            self.cityNames.append((returnArray?["city"] as! String)+","+(returnArray?["state_full"] as! String))
+                        }
+                        else
+                        {
+                            self.cityNames.append("")
+                        }
+                        self.cityZipCodes.append(firstTextField.text!)
+                        self.retriveDataFromZip(firstTextField.text!)
+                    }catch {
+                        print("Error Serialization JSON Data\n\n")
+                    }
+                }
+                task.resume();
             }
             
         })
@@ -52,7 +88,6 @@ class TableViewController: UITableViewController,XMLParserDelegate {
     func retriveDataFromZip(_ zip:String)
     {
         let baseURL = "https://graphical.weather.gov/xml/sample_products/browser_interface/ndfdBrowserClientByDay.php?whichClient=NDFDgenByDayMultiZipCode&lat=&lon=&listLatLon=&lat1=&lon1=&lat2=&lon2=&resolutionSub=&endPoint1Lat=&endPoint1Lon=&endPoint2Lat=&endPoint2Lon=&centerPointLat=&centerPointLon=&distanceLat=&distanceLon=&resolutionSquare=&zipCodeList=\(zip)&citiesLevel=&format=24+hourly&startDate=\(currentDate)&numDays=1&Unit=e&Submit=Submit";
-        print(baseURL);
         
         let urlToSend:URL = URL(string: baseURL)!
         let parser = XMLParser(contentsOf: urlToSend)
@@ -120,7 +155,7 @@ class TableViewController: UITableViewController,XMLParserDelegate {
         }else
         {
             cityZipCodes.remove(at: cityZipCodes.count-1 )
-            
+            cityNames.remove(at: cityNames.count-1)
             let alertController = UIAlertController(title: "Oops,Something's wrong!", message: "The entered ZipCode doesn't exist.", preferredStyle: .alert)
             let cancelAction = UIAlertAction(title: "OK", style: .default, handler: {
                 (action:UIAlertAction!)->Void in
@@ -147,8 +182,9 @@ class TableViewController: UITableViewController,XMLParserDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TemperatureCell", for: indexPath)
 
-        cell.textLabel?.text = cityZipCodes[indexPath.row].description
-        cell.detailTextLabel?.text = maxTemperatues[indexPath.row].description + "F"
+        cell.textLabel?.text = cityNames[indexPath.row] + "("+cityZipCodes[indexPath.row].description+")"
+        cell.detailTextLabel?.text = maxTemperatues[indexPath.row].description + "°F"
+        cell.backgroundColor = UIColorFromTemperature(temperature: maxTemperatues[indexPath.row])
         
         return cell
     }
@@ -172,6 +208,7 @@ class TableViewController: UITableViewController,XMLParserDelegate {
             // Delete the row from the data source
             cityZipCodes.remove(at: indexPath.row)
             maxTemperatues.remove(at: indexPath.row)
+            cityNames.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
