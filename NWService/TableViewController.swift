@@ -51,8 +51,8 @@ class TableViewController: UITableViewController,XMLParserDelegate {
     
     func retriveDataFromZip(_ zip:String)
     {
-        let baseURL = "https://graphical.weather.gov/xml/sample_products/browser_interface/ndfdBrowserClientByDay.php?whichClient=NDFDgenByDayMultiZipCode&lat=&lon=&listLatLon=&lat1=&lon1=&lat2=&lon2=&resolutionSub=&endPoint1Lat=&endPoint1Lon=&endPoint2Lat=&endPoint2Lon=&centerPointLat=&centerPointLon=&distanceLat=&distanceLon=&resolutionSquare=&zipCodeList=\(zip)&citiesLevel=&format=24+hourly&startDate=\(currentDate)&numDays=2&Unit=e&Submit=Submit";
-        
+        let baseURL = "https://graphical.weather.gov/xml/sample_products/browser_interface/ndfdBrowserClientByDay.php?whichClient=NDFDgenByDayMultiZipCode&lat=&lon=&listLatLon=&lat1=&lon1=&lat2=&lon2=&resolutionSub=&endPoint1Lat=&endPoint1Lon=&endPoint2Lat=&endPoint2Lon=&centerPointLat=&centerPointLon=&distanceLat=&distanceLon=&resolutionSquare=&zipCodeList=\(zip)&citiesLevel=&format=24+hourly&startDate=\(currentDate)&numDays=1&Unit=e&Submit=Submit";
+        print(baseURL);
         
         let urlToSend:URL = URL(string: baseURL)!
         let parser = XMLParser(contentsOf: urlToSend)
