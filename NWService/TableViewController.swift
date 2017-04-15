@@ -12,10 +12,12 @@ class TableViewController: UITableViewController,XMLParserDelegate {
 
     
     var cityZipCodes = ["74075","25414","98101","99501"];
-    var cityNames = ["Stillwater,Oklahoma","Charles Town,Massachusetts","Seattle,Washington","Anchorage,Alaska"];
+    var cityNames = ["Stillwater,OK","Charles Town,MA","Seattle,WA","Anchorage,AL"];
     var maxTemperatues = [Int]();
+    var temperatueImages = [UIImage]();
     var currentDate = ""
     var check = false
+    var imageCheck = false
   
     func UIColorFromTemperature(temperature:Int) -> UIColor{
         let interpolatedValue:Double = (Double(temperature) - 32.0)/(90.0-32.0)
@@ -54,7 +56,7 @@ class TableViewController: UITableViewController,XMLParserDelegate {
                         let returnArray = try JSONSerialization.jsonObject(with: result, options: .allowFragments) as? NSDictionary
                         if returnArray != nil
                         {
-                            self.cityNames.append((returnArray?["city"] as! String)+","+(returnArray?["state_full"] as! String))
+                            self.cityNames.append((returnArray?["city"] as! String)+","+(returnArray?["state_abbrev"] as! String))
                         }
                         else
                         {
@@ -125,12 +127,20 @@ class TableViewController: UITableViewController,XMLParserDelegate {
                 self.check = true;
             }
         }
+        if elementName == "icon-link"
+        {
+            self.imageCheck = true
+        }
     }
     
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         if elementName == "temperature"
         {
             self.check = false;
+        }
+        if elementName == "icon-link"
+        {
+            self.imageCheck = false
         }
     }
     
@@ -142,6 +152,13 @@ class TableViewController: UITableViewController,XMLParserDelegate {
             {
                 maxTemperatues.append(num!)
             }
+        }
+        if(self.imageCheck)
+        {
+       
+            let url = URL(string: string)
+            let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
+            temperatueImages.append(UIImage(data: data!)!)
         }
     }
     
@@ -185,7 +202,7 @@ class TableViewController: UITableViewController,XMLParserDelegate {
         cell.textLabel?.text = cityNames[indexPath.row] + "("+cityZipCodes[indexPath.row].description+")"
         cell.detailTextLabel?.text = maxTemperatues[indexPath.row].description + "°F"
         cell.backgroundColor = UIColorFromTemperature(temperature: maxTemperatues[indexPath.row])
-        
+        cell.imageView?.image = temperatueImages[indexPath.row]
         return cell
     }
     
@@ -209,6 +226,7 @@ class TableViewController: UITableViewController,XMLParserDelegate {
             cityZipCodes.remove(at: indexPath.row)
             maxTemperatues.remove(at: indexPath.row)
             cityNames.remove(at: indexPath.row)
+            temperatueImages.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
