@@ -94,9 +94,7 @@ class TableViewController: UITableViewController,XMLParserDelegate {
         let urlToSend:URL = URL(string: baseURL)!
         let parser = XMLParser(contentsOf: urlToSend)
         parser?.delegate = self
-        parser?.parse();
-        
-     
+        parser?.parse()
         
     }
     override func viewDidLoad() {
@@ -168,18 +166,25 @@ class TableViewController: UITableViewController,XMLParserDelegate {
     func parserDidEndDocument(_ parser: XMLParser) {
         if cityZipCodes.count == maxTemperatues.count
         {
-            self.tableView.reloadData()
+            DispatchQueue.main.asyncAfter(deadline: .now() ){
+                self.tableView.reloadData()
+                print(self.maxTemperatues)
+
+            }
+          
         }else
         {
             cityZipCodes.remove(at: cityZipCodes.count-1 )
             cityNames.remove(at: cityNames.count-1)
-            let alertController = UIAlertController(title: "Oops,Something's wrong!", message: "The entered ZipCode doesn't exist.", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "Oops, Something's wrong!", message: "The entered ZipCode doesn't exist.", preferredStyle: .alert)
             let cancelAction = UIAlertAction(title: "OK", style: .default, handler: {
                 (action:UIAlertAction!)->Void in
             })
             alertController.addAction(cancelAction)
             self.present(alertController,animated: true,completion: nil)
         }
+      
+
     }
     
 
