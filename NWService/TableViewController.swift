@@ -12,6 +12,7 @@ class TableViewController: UITableViewController,XMLParserDelegate {
 
     
     var cityZipCodes = ["74075","25414","98101","99501"];
+    //initial static data
     var cityNames = ["Stillwater,OK","Charles Town,MA","Seattle,WA","Anchorage,AL"];
     var maxTemperatues = [Int]();
     var temperatueImages = [UIImage]();
